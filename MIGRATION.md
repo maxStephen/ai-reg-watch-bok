@@ -30,8 +30,17 @@ gh repo clone maxStephen/ai-reg-watch-bok ~/Documents/_git/ai-reg-watch-bok
 - **TBD:** `bootstrap.sh` (Python environment, `launchd` schedule, vault path)
 - **TBD:** Anthropic API key storage (macOS Keychain; never committed)
 
-## 4. Restore Claude Code configuration
+## 4. Restore the ops register (private repo)
+```bash
+brew install age
+gh repo clone maxStephen/ops ~/Documents/_git/ops
+mkdir -p ~/.config/age
+```
+Restore the age private key from your password manager to `~/.config/age/ops.key`
+(`chmod 600` it). Without this key, the encrypted config backups can't be decrypted.
+
+## 5. Restore Claude Code configuration
 - **TBD:** private dotfiles repo for `~/.claude/CLAUDE.md` and `~/.claude/settings.json`
 
-## 5. Verify
+## 6. Verify
 - **TBD:** run the watcher once manually and confirm a digest note appears in the vault.
