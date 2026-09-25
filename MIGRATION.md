@@ -40,7 +40,12 @@ Restore the age private key from your password manager to `~/.config/age/ops.key
 (`chmod 600` it). Without this key, the encrypted config backups can't be decrypted.
 
 ## 5. Restore Claude Code configuration
-- **TBD:** private dotfiles repo for `~/.claude/CLAUDE.md` and `~/.claude/settings.json`
+Global `CLAUDE.md` and `settings.json` live in the private `dotfiles` repo and are symlinked into `~/.claude/`:
+```bash
+gh repo clone maxStephen/dotfiles ~/Documents/_git/dotfiles
+~/Documents/_git/dotfiles/install.sh
+```
+Install Claude Code (CLI and/or desktop app) and sign in; it picks up the linked files on the next session.
 
 ## 6. Verify
 - **TBD:** run the watcher once manually and confirm a digest note appears in the vault.
