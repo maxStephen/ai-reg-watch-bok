@@ -3,7 +3,7 @@
 Monitors AI regulation and standards sources for changes and delivers curated
 updates into an Obsidian-based AI Audit Body of Knowledge (BOK).
 
-> **Status:** scaffolding. Implementation in progress.
+> **Status:** change detection, vault notes, notifications, and setup script work. Claude summaries are next.
 
 ## Planned design
 - **Runs locally** on macOS once a day via `launchd`.
@@ -15,6 +15,10 @@ updates into an Obsidian-based AI Audit Body of Knowledge (BOK).
   a dated digest note with `diff` blocks, and a macOS notification that opens the digest.
 
 ## Setup
+```bash
+./bootstrap.sh            # install dependencies, API key, daily 07:00 schedule
+.venv/bin/regwatch run --dry-run
+```
 See [MIGRATION.md](MIGRATION.md) for setting up a new Mac.
 
 ## Credits

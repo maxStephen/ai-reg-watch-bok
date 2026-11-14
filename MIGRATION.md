@@ -1,7 +1,18 @@
 # New Mac setup
 
 Steps to move the regulation watcher and the AI Audit BOK to a new MacBook.
-Sections marked **TBD** will be filled in as the implementation is built.
+
+## 0. On the old Mac (before retiring it)
+Stop the daily run so two Macs never write to the vault:
+```bash
+~/Documents/_git/ai-reg-watch-bok/bootstrap.sh --unschedule
+```
+Copy these local-only files somewhere safe (they are not in any git repo):
+- `~/Documents/_git/ai-reg-watch-bok.local/secrets/anthropic_api_key`
+- `~/Documents/vaults/ai-audit-bok/Reference/` (two files, listed in step 2)
+
+Change history (`ai-reg-watch-bok.local/state/`) does not need to move: the first run on
+the new Mac records a fresh baseline.
 
 ## 1. Base tools
 ```bash
@@ -27,8 +38,20 @@ Then in Obsidian: **Open folder as vault** → `~/Documents/vaults/ai-audit-bok`
 mkdir -p ~/Documents/_git
 gh repo clone maxStephen/ai-reg-watch-bok ~/Documents/_git/ai-reg-watch-bok
 ```
-- **TBD:** `bootstrap.sh` (Python environment, `launchd` schedule, vault path)
-- **TBD:** Anthropic API key storage (macOS Keychain; never committed)
+Then run the bootstrap script:
+```bash
+~/Documents/_git/ai-reg-watch-bok/bootstrap.sh
+```
+It is safe to re-run. It:
+- installs `python`, `git`, `gh`, and `terminal-notifier` with Homebrew
+- clones the vault (step 2) if it isn't there yet
+- creates the Python environment and the local data folder `~/Documents/_git/ai-reg-watch-bok.local/`
+  (`logs/`, `state/`, `secrets/`)
+- asks for the Anthropic API key and saves it to `secrets/anthropic_api_key`, readable only by you.
+  Keep ~/Documents out of iCloud's "Desktop & Documents Folders" sync so the key stays local.
+- warns if the Mac's time zone isn't Eastern
+- installs the daily 07:00 run (`~/Library/LaunchAgents/com.maxstephen.regwatch.plist`)
+- finishes with a dry run
 
 ## 4. Restore the ops register (private repo)
 ```bash
@@ -48,4 +71,10 @@ gh repo clone maxStephen/dotfiles ~/Documents/_git/dotfiles
 Install Claude Code (CLI and/or desktop app) and sign in; it picks up the linked files on the next session.
 
 ## 6. Verify
-- **TBD:** run the watcher once manually and confirm a digest note appears in the vault.
+```bash
+~/Documents/_git/ai-reg-watch-bok/.venv/bin/regwatch run
+```
+The first run records baselines and sends a "No AI regulation changes" notification.
+To see a digest without waiting for a Monday, run with `--date` set to a Monday
+(e.g. `--date 2026-11-16`): the digest in `Regulation Watch/Digests/` lists the manual ISO check.
+Logs are in `~/Documents/_git/ai-reg-watch-bok.local/logs/`.
