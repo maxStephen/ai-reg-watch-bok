@@ -1,0 +1,32 @@
+# Sources to monitor. Fields:
+#   id           unique, filename-safe identifier
+#   name         display name
+#   url          page or document to fetch
+#   type         html | pdf
+#   ai_allowed   false = never send this source's content to an AI model
+#   store_text   false = keep only a SHA-256 fingerprint; no copied text is saved
+#
+# Additional sources are tracked in maxStephen/ops#2.
+
+sources:
+  - id: nist-ai-rmf
+    name: NIST AI Risk Management Framework (landing page)
+    url: https://www.nist.gov/itl/ai-risk-management-framework
+    type: html
+    ai_allowed: true
+    store_text: true
+
+  - id: nist-ai-100-1
+    name: NIST AI 100-1, AI RMF 1.0 (document)
+    url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf
+    type: pdf
+    ai_allowed: true
+    store_text: true
+
+  # ISO terms restrict AI use and redistribution: fingerprint only, manual review.
+  - id: iso-iec-42001
+    name: ISO/IEC 42001 (catalog page)
+    url: https://www.iso.org/standard/81230.html
+    type: html
+    ai_allowed: false
+    store_text: false
