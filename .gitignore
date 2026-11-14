@@ -6,3 +6,5 @@ __pycache__/
 # Local run state (snapshots may contain third-party copyrighted text)
 data/
 logs/
+*.egg-info/
+.pytest_cache/
