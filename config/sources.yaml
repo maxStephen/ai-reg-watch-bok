@@ -5,6 +5,8 @@
 #   type         html | pdf
 #   ai_allowed   false = never send this source's content to an AI model
 #   store_text   false = keep only a SHA-256 fingerprint; no copied text is saved
+#   check        daily (default) | weekly (Mondays) | manual (never fetched;
+#                listed as a reminder in Monday's digest)
 #
 # Additional sources are tracked in maxStephen/ops#2.
 
@@ -23,10 +25,12 @@ sources:
     ai_allowed: true
     store_text: true
 
-  # ISO terms restrict AI use and redistribution: fingerprint only, manual review.
+  # ISO terms restrict AI use and redistribution, and iso.org returns HTTP 403 to
+  # automated requests: manual check only. Alternative source tracked in maxStephen/ops#3.
   - id: iso-iec-42001
     name: ISO/IEC 42001 (catalog page)
     url: https://www.iso.org/standard/81230.html
     type: html
     ai_allowed: false
     store_text: false
+    check: manual

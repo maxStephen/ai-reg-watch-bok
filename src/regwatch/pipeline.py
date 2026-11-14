@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
+from datetime import date
 
 from .config import Source
 from .detect import fingerprint, unified_diff
@@ -17,7 +18,7 @@ log = logging.getLogger(__name__)
 @dataclass
 class Outcome:
     source: Source
-    status: str  # "baseline" | "unchanged" | "changed" | "not_modified" | "blocked" | "error"
+    status: str  # "baseline" | "unchanged" | "changed" | "not_modified" | "blocked" | "error" | "manual"
     detail: str = ""
     diff: str | None = None  # None for fingerprint-only sources
     change_id: int | None = None
@@ -61,9 +62,21 @@ def check_source(source: Source, fetcher: Fetcher, state: State, dry_run: bool =
     return outcome
 
 
-def run(sources: list[Source], fetcher: Fetcher, state: State, dry_run: bool = False) -> list[Outcome]:
+def is_monday(day: date) -> bool:
+    return day.weekday() == 0
+
+
+def run(sources: list[Source], fetcher: Fetcher, state: State, dry_run: bool = False,
+        today: date | None = None) -> list[Outcome]:
+    today = today or date.today()
     outcomes = []
     for source in sources:
+        if source.check == "manual":
+            if is_monday(today):
+                outcomes.append(Outcome(source, "manual", "manual check reminder"))
+            continue
+        if source.check == "weekly" and not is_monday(today):
+            continue
         outcome = check_source(source, fetcher, state, dry_run)
         log.info("%-16s %-12s %s", source.id, outcome.status, outcome.detail)
         outcomes.append(outcome)
